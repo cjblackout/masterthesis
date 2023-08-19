@@ -8,7 +8,7 @@ from typing import Tuple
 
 def preprocess_data(file_path:str, columns:list, plot: bool=False) -> pd.DataFrame:
     """
-    Preprocesses the data from a CSV file and returns a pandas DataFrame.
+    Preprocesses the data from the cluster data CSV file and returns a pandas DataFrame.
 
     Parameters:
     file_path (str): The path to the CSV file.
@@ -35,7 +35,7 @@ def preprocess_data(file_path:str, columns:list, plot: bool=False) -> pd.DataFra
 
         if plot:
             df_plot = df_output.query('ground_truth > 0')
-            sns.displot(df_output['ground_truth'])
+            sns.displot(df_output['ground_truth'], bins=100)
 
         return df_output
     

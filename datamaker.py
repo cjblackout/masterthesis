@@ -12,6 +12,29 @@ from ipywidgets import IntProgress
 from IPython.display import display
 from model import predict_ground_truth
 from baseline import baseline_mean_shift, baseline_augmented, baseline_mean_shift_third, baseline_mean_shift_third_augmented
+from constants import RELATIVE_IMAGES_CSV
+
+def make_image_csv(dataset_dir:str, output_csv_file:str):
+    """
+    Reads in a CSV file containing relative image paths and outputs a new CSV file containing the full image paths.
+
+    Args:
+        dataset_dir (str): The path to the input directory.
+        output_csv_file (str): The path to the output CSV file.
+
+    Returns:
+        None
+    """
+    
+    # read the CSV file
+    df = pd.read_csv(RELATIVE_IMAGES_CSV)
+    
+    # add the dataset_dir to each element in the "image_path" column
+    df['image_path'] = dataset_dir + df['image_path']
+    df['label'] = dataset_dir + df['label']
+    
+    # output the result to "image_paths.csv"
+    df.to_csv(output_csv_file, index=False, header=True, columns=['image_path', 'label'])
 
 def make_cluster_separated_metadata(input_csv_file, columns, output_csv_file, regression=True):
     """
@@ -55,8 +78,16 @@ def make_cluster_separated_metadata(input_csv_file, columns, output_csv_file, re
         
         (segmented_image, labels_image, number_regions) = pms.segment(image, spatial_radius=2, range_radius=8, min_density=250)
         
+        #code for model
         prediction = predict_ground_truth(row['image_path'], model, scaler, threshold=threshold)
+        
+        #code for top half baseline
         #upper_labels = labels_image[0:labels_image.shape[0]//2, 0:labels_image.shape[1]]
+        #unique, counts = np.unique(upper_labels, return_counts=True)
+        #dominant_label = unique[np.argmax(counts)]
+
+        #code for top third baseline
+        #upper_labels = labels_image[0:labels_image.shape[0]//3, 0:labels_image.shape[1]]
         #unique, counts = np.unique(upper_labels, return_counts=True)
         #dominant_label = unique[np.argmax(counts)]
         
@@ -278,8 +309,9 @@ def update_thresholds(df_output, threshold, lower_q, upper_q, threshold_file):
     
 def create_analysis_data(input_csv_file, output_csv_file, function):
     """
-    Reads in a CSV file containing image paths and ground truth, and outputs a new CSV file with the processed data.
-    The processed data includes the new image path and ground truth for each non-corrupted image.
+    Reads in a CSV file containing image paths and ground truth, and outputs a new CSV file with the metrics for that algorithm. 
+    Only works with baseline variants.
+    The processed data includes the new image path and the metrics for each non-corrupted image.
 
     Args:
         input_csv_file (str): The path to the CSV file containing the image paths and ground truth.

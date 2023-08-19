@@ -5,11 +5,7 @@ import json
 import matplotlib.pyplot as plt
 import pymeanshift as pms
 
-THRESHOLD = 0.5
-SPATIAL_RADIUS = 2
-RANGE_RADIUS = 2
-MIN_DENSITY = 150
-PROCESSING_SHAPE = (256,256)
+from constants import THRESHOLD, SPATIAL_RADIUS, RANGE_RADIUS, MIN_DENSITY, PROCESSING_SHAPE, LABEL_FOLDER
 
 def baseline_mean_shift(img, processing_shape=PROCESSING_SHAPE, spatial_radius=SPATIAL_RADIUS, range_radius=RANGE_RADIUS, min_density=MIN_DENSITY):
     """
@@ -356,24 +352,29 @@ def display_results(filename, function, print_mode='display', dataset_mode='orig
                   ", range_radius: " + str(range_radius) + ", min_density: " + str(min_density))
             print('Time taken: ', time_taken)
 
-            plt.title('Segmented Image')
-            plt.imshow(segmented_image)
-            plt.show()
+            fig, axs = plt.subplots(2, 2, figsize=(17, 10))
+            fig.suptitle('Sky Segmentation', fontsize=22)
 
-            plt.title('Labels Image')
-            plt.imshow(labels_image)
-            plt.show()
+            axs[0, 0].imshow(plt.imread(filename))
+            axs[0, 0].set_title('Original Image', fontsize=18)
+            axs[0, 0].axis('off')
 
-            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 5))
-            fig.suptitle('Sky Segmentation')
-            ax1.imshow(after_img)
-            ax1.set_title('Result')
-            ax2.imshow(plt.imread(filename))
-            ax2.set_title('Original Image')
+            axs[0, 1].imshow(segmented_image)
+            axs[0, 1].set_title('Segmented Image', fontsize=18)
+            axs[0, 1].axis('off')
+
+            axs[1, 0].imshow(labels_image)
+            axs[1, 0].set_title('Labels Image', fontsize=18)
+            axs[1, 0].axis('off')
+
+            axs[1, 1].imshow(after_img)
+            axs[1, 1].set_title('Result', fontsize=18)
+            axs[1, 1].axis('off')
+
             plt.show()
 
             if dataset_mode == 'validate':
-                val_image = cv2.imread("C:\\Users\\cjbla\\OneDrive\\Desktop\\Code\\data\\dataset\\ValidationImages\\Skyfinder\\" + filename.split("\\")[-2] + ".png")
+                val_image = cv2.imread(LABEL_FOLDER + filename.split("\\")[-2] + ".png")
                 val_image = cv2.cvtColor(val_image, cv2.COLOR_BGR2GRAY)
 
                 # Calculate the precision and recall
@@ -397,7 +398,7 @@ def display_results(filename, function, print_mode='display', dataset_mode='orig
 
         else:
             if dataset_mode == 'validate':
-                val_image = cv2.imread("C:\\Users\\cjbla\\OneDrive\\Desktop\\Code\\data\\dataset\\ValidationImages\\Skyfinder\\" + filename.split("\\")[-2] + ".png")
+                val_image = cv2.imread(LABEL_FOLDER + filename.split("\\")[-2] + ".png")
                 val_image = cv2.cvtColor(val_image, cv2.COLOR_BGR2GRAY)
 
                 # Calculate the precision and recall
