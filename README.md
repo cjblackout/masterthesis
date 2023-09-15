@@ -1,12 +1,3 @@
-# Masters Thesis: Deep Learning for Wind Farm Visualization App
-
-### Author: Rishabh Saxena
-
-### Objective : To create an algorithmic approach to occlude a 3D asset on a Unity application. Current progress deals with using Mean-Shift Segmentation to segment the image, take the most dominant label on the top half and consider it sky.
-
-
-### Updates:
-
-NN.ipynb deals with pure Deep Learning Methodology for the same. 
-
-Current Job: Create a smaller NN that can detect a path of the segmented image and consider it sky.
+version https://git-lfs.github.com/spec/v1
+oid sha256:0e7eb35bcc9981873ceeda63b9c1ae4d748cf0ebfb515665510b0e51ed070cd3
+size 1695
