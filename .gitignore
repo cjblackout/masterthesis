@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b99882ef29e8689b2ef86888dc4c004ec73e1396d7c86fdcb1edb0dff956c3a9
-size 42
+models
+mlruns
+mastersthesis
+__pycache__
+presentation_images
